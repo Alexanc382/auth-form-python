@@ -10,3 +10,12 @@ def index(request: Request):  # функция. которая возвраща�
     with open(index_file) as f:
         content = f.read()
         return HTMLResponse(content)
+
+@app.post("/login")
+def login(username: str = Form(...), password: str = Form(...)):
+    entered_name = username
+    entered_password = password
+    return {
+        "username": entered_name,
+        "password": entered_password
+    }
