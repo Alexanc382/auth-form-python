@@ -31,10 +31,19 @@ def index():  # функция. которая возвращает в брау�
 
 @app.post("/login")
 def login(username: str = Form(...), password: str = Form(...)):
-    conn = sqlite3.connect('users.db')
-    curs = conn.cursor()
-    curs.execute("""INSERT INTO users (username, password) VALUES (?, ?)""", [username, password])
-    conn.commit()
-    conn.close()
-    return {"message": "Login successful"}
+    if username and password:
+        try:
+            conn = sqlite3.connect('users.db')
+            curs = conn.cursor()
+            curs.execute("""INSERT INTO users (username, password) VALUES (?, ?)""", [username, password])
+            conn.commit()
+            conn.close()
+            return {"message": "Login successful"}
+        except sqlite3.OperationalError as e:
+            return {"message": str(e)}
+        except Exception as e:
+            return {"message": str(e)}
+    else:
+        return HTMLResponse("<h2>Пожалуйста, заполните поля!</h2>")
+
 
