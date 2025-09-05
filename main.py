@@ -1,13 +1,13 @@
 import os
-from fastapi import FastAPI, Form, Request
+from fastapi import FastAPI, Form
 from fastapi.responses import  HTMLResponse
 
 app = FastAPI()
 
-@app.get("/")
-def index(request: Request):  # функция. которая возвращает в браузер html-страницу
+@app.get("/", response_class=HTMLResponse)
+def index():  # функция. которая возвращает в браузер html-страницу
     index_file = os.path.join("static", "index.html")
-    with open(index_file) as f:
+    with open(index_file, "r", encoding="utf-8") as f:
         content = f.read()
         return HTMLResponse(content)
 
@@ -15,7 +15,8 @@ def index(request: Request):  # функция. которая возвраща�
 def login(username: str = Form(...), password: str = Form(...)):
     entered_name = username
     entered_password = password
-    return {
+    user_data = {
         "username": entered_name,
         "password": entered_password
     }
+    return user_data
