@@ -1,8 +1,25 @@
 import os
 from fastapi import FastAPI, Form
 from fastapi.responses import  HTMLResponse
+import sqlite3
 
 app = FastAPI()
+
+
+def init_db():
+    conn = sqlite3.connect('users.db')
+    curs = conn.cursor()
+    curs.execute("""CREATE TABLE IF NOT EXISTS users (
+                id integer PRIMARY KEY AUTOINCREMENT,
+                username text NOT NULL,
+                password text NOT NULL
+            )
+        """)
+    conn.commit()
+    conn.close()
+
+init_db()
+
 
 @app.get("/", response_class=HTMLResponse)
 def index():  # функция. которая возвращает в браузер html-страницу
@@ -10,6 +27,7 @@ def index():  # функция. которая возвращает в брау�
     with open(index_file, "r", encoding="utf-8") as f:
         content = f.read()
         return HTMLResponse(content)
+
 
 @app.post("/login")
 def login(username: str = Form(...), password: str = Form(...)):
@@ -20,3 +38,4 @@ def login(username: str = Form(...), password: str = Form(...)):
         "password": entered_password
     }
     return user_data
+
