@@ -1,4 +1,4 @@
-# User Authentication Form (in progress) — Python, Flask, SQLite
+# User Authentication Form (in progress) — Python, FastAPI, SQLite
 - A web application to handle user registration and login with secure data storage.
 Features implemented so far:
 - User registration form with backend integration
